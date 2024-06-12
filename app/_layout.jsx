@@ -7,6 +7,11 @@ export default function HomeLayout() {
         <Stack screenOptions={{
             headerShown: false
         }}
-        />
+        >
+            <Stack.Screen name='(tabs)'
+                options={{
+                    headerShown: false
+                }} />
+        </Stack>
     )
 }

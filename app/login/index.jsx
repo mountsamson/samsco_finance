@@ -1,11 +1,26 @@
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native'
 import React from 'react'
 import logo from './../../assets/logo.png'
-
 import colors from '../../utils/colors'
-import { Colors } from 'react-native/Libraries/NewAppScreen'
+import { client } from '../../utils/KindeConfig'
+import services from './../../utils/services'
+import { useRouter } from 'expo-router'
+
 
 export default function LoginScreen() {
+
+    const router = useRouter()
+
+    const handleSignIn = async () => {
+        const token = await client.login();
+        if (token) {
+            // User was authenticated
+            await services.storeData('login', 'true')
+            router.replace('/')
+        }
+    };
+
+
     return (
         <View style={styles.container}>
             <Image source={logo} style={styles.bgImage} />
@@ -13,8 +28,8 @@ export default function LoginScreen() {
                 <Text style={styles.title}>Personal AI Budget Planner</Text>
 
                 <Text style={styles.description}>Stay on Track with your budget using our AI-powered app with effortless financial management.</Text>
-                <TouchableOpacity style={styles.button} >
-                    <Text style={{ textAlign: 'center', color: Colors.PRIMARY }}>Login/Signup</Text>
+                <TouchableOpacity style={styles.button} onPress={handleSignIn} >
+                    <Text style={{ textAlign: 'center', color: colors.PRIMARY }}>Login/Signup</Text>
                 </TouchableOpacity>
                 <Text style={styles.terms}>* By login/signup you will agree to your terms and conditions</Text>
             </View>
