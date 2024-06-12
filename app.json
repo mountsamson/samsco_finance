@@ -3,6 +3,7 @@
     "name": "samsco_finance",
     "slug": "samsco_finance",
     "version": "1.0.0",
+    "scheme": "samsco_finance",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -22,6 +23,7 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": ["expo-router"]
   }
 }
