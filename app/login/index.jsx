@@ -1,11 +1,11 @@
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native'
 import React from 'react'
 import logo from './../../assets/logo.png'
-import colors from '../../utils/colors'
+import colors from '../../utils/Colors'
 import { client } from '../../utils/KindeConfig'
 import services from './../../utils/services'
 import { useRouter } from 'expo-router'
-
+import { Linking } from 'react-native';
 
 export default function LoginScreen() {
 
@@ -72,12 +72,15 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         color: colors.WHITE,
 
+
+
     },
     description: {
         fontSize: 18,
         textAlign: 'center',
         color: colors.WHITE,
         marginTop: 20,
+        fontFamily: 'outfit'
 
     },
     button: {

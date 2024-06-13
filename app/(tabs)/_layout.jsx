@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Text, View } from 'react-native'
 import { Tabs } from 'expo-router'
 import FontAwesome from '@expo/vector-icons/FontAwesome'
-import colors from '../../utils/colors'
+import colors from '../../utils/Colors'
 
 
 export default class TabLayout extends Component {

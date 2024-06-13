@@ -4,6 +4,10 @@ import { Link, useRouter } from 'expo-router'
 import services from './../../utils/services'
 import { client } from '../../utils/KindeConfig'
 import { supabase } from '../../utils/SupabaseConfig'
+import Header from '../../components/Header'
+import colors from '../../utils/Colors'
+import PieChartGraph from '../../components/PieChartGraph'
+import { Ionicons } from '@expo/vector-icons'
 
 export default function Home() {
 
@@ -48,24 +52,42 @@ export default function Home() {
   return (
 
 
+    <View style={{
+      marginTop: 20,
+      flex: 1,
 
-    <View style={styles.container} >
-      <Text style={styles.text}>Home</Text>
+    }}>
+      <View style={styles.container} >
 
 
-      <Button title='Logout' onPress={handleLogout} />
+
+        <Header />
+        <PieChartGraph />
 
 
+      </View>
+      <Link href={'/add-new-category'} style={styles.addBtnContainer}>
+        <Ionicons name="add-circle" size={64} color={colors.PRIMARY} />
+
+      </Link>
     </View>
-
   )
 }
 
 const styles = StyleSheet.create({
-  text: {
-    fontSize: 20
-  },
+
   container: {
-    marginTop: 20
+
+    padding: 20,
+    backgroundColor: colors.PRIMARY,
+    height: 150,
+
+  },
+  addBtnContainer: {
+    position: 'absolute',
+    bottom: 16,
+    right: 16,
+
+
   }
 })
