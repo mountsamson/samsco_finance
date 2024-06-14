@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Button } from 'react-native'
+import { View, Text, StyleSheet, Button, ActivityIndicator, RefreshControl, TouchableOpacity } from 'react-native'
 import React, { useEffect } from 'react'
 import { Link, useRouter } from 'expo-router'
 import services from './../../utils/services'
@@ -8,10 +8,15 @@ import Header from '../../components/Header'
 import colors from '../../utils/Colors'
 import PieChartGraph from '../../components/PieChartGraph'
 import { Ionicons } from '@expo/vector-icons'
+import CategoryList from '../../components/CategoryList'
+import { useState } from 'react'
+import { ScrollView } from 'react-native'
 
 export default function Home() {
 
   const router = useRouter()
+  const [categoryList, setCategoryList] = useState()
+  const [loading, setLoading] = useState(false)
   // check user if already authenitcated
   useEffect(() => {
 
@@ -42,12 +47,15 @@ export default function Home() {
   }
 
   const getCategoryList = async () => {
+    setLoading(true)
     const user = await client.getUserDetails()
     const { data, error } = await supabase.from('Category')
-      .select("*")
+      .select("*, CategoryItems(*)")
       .eq('created_by', user.email)
 
     console.log("Data", data)
+    setCategoryList(data);
+    data && setLoading(false)
   }
   return (
 
@@ -57,19 +65,32 @@ export default function Home() {
       flex: 1,
 
     }}>
-      <View style={styles.container} >
+      <ScrollView refreshControl={<RefreshControl
+        onRefresh={() => getCategoryList()}
+        refreshing={loading}
+      />}>
+        <View style={styles.container} >
 
 
 
-        <Header />
-        <PieChartGraph />
+          <Header />
+        </View>
+        <View style={{
+          padding: 20,
+          marginTop: -76
+        }}>
+          <PieChartGraph />
+          <CategoryList categoryList={categoryList} />
+        </View>
 
 
-      </View>
-      <Link href={'/add-new-category'} style={styles.addBtnContainer}>
+
+      </ScrollView>
+      <TouchableOpacity style={styles.addBtnContainer} onPress={() => router.push('/add-new-category')}>
         <Ionicons name="add-circle" size={64} color={colors.PRIMARY} />
 
-      </Link>
+
+      </TouchableOpacity>
     </View>
   )
 }
