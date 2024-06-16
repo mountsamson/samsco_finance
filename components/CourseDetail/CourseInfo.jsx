@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
     textIcon: {
         fontSize: 20,
         padding: 20,
-        borderRadius: 15
+        borderRadius: 13
     },
     iconContainer: {
         justifyContent: 'center',

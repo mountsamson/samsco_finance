@@ -12,6 +12,7 @@ import CategoryList from '../../components/CategoryList'
 import { useState } from 'react'
 import { ScrollView } from 'react-native'
 
+
 export default function Home() {
 
   const router = useRouter()
@@ -56,7 +57,9 @@ export default function Home() {
     console.log("Data", data)
     setCategoryList(data);
     data && setLoading(false)
+
   }
+
   return (
 
 
@@ -91,6 +94,9 @@ export default function Home() {
 
 
       </TouchableOpacity>
+      <Button title="Logout" onPress={handleLogout} />
+
+
     </View>
   )
 }
@@ -111,4 +117,5 @@ const styles = StyleSheet.create({
 
 
   }
+
 })
