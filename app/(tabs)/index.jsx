@@ -66,8 +66,9 @@ export default function Home() {
 
 
     <View style={{
-      marginTop: 20,
+
       flex: 1,
+
 
     }}>
       <ScrollView refreshControl={<RefreshControl
@@ -108,8 +109,10 @@ const styles = StyleSheet.create({
   container: {
 
     padding: 20,
-    backgroundColor: colors.PRIMARY,
-    height: 150,
+    paddingTop: 50,
+    backgroundColor: colors.PROBLUE,
+    height: 180,
+
 
   },
   addBtnContainer: {

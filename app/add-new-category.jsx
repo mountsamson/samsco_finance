@@ -56,7 +56,7 @@ export default function AddNewCategory() {
             }>
                 <TextInput
                     style={[styles.iconInput, { backgroundColor: selectedColor }]}
-                    maxLength={2}
+
                     onChangeText={(value) => setSelectedIcon(value)}
 
                 > {selectedIcon}</TextInput>

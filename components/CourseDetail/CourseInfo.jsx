@@ -53,16 +53,21 @@ export default function CourseInfo({ categoryData }) {
                         .from('Category')
                         .delete()
                         .eq('id', categoryData.id)
+                    router.replace('/(tabs)')
+
 
                     ToastAndroid.show("Category deleted", Toast.SHORT)
 
-                    router.replace('/(tabs)')
+
 
 
 
                 }
+
             }
+
         ])
+
     }
 
 
