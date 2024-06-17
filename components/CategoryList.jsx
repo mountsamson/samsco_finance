@@ -15,6 +15,18 @@ export default function CategoryList({ categoryList }) {
         })
 
     }
+
+    const calculateTotalCost = (categoryItems) => {
+
+        let totalCost = 0
+        categoryItems.forEach(item => {
+            totalCost = totalCost + item.cost
+
+        })
+        return totalCost
+    }
+
+
     return (
         <View style={{
             marginTop: 20,
@@ -41,10 +53,10 @@ export default function CategoryList({ categoryList }) {
                         <View style={styles.subContainer}>
                             <View>
                                 <Text style={styles.categoryText}>{category.name}</Text>
-                                <Text style={styles.itemCount}>{category.CategoryItems?.length} Items</Text>
+                                <Text style={styles.itemCount}>{category?.CategoryItems?.length} Items</Text>
                             </View>
                         </View>
-                        <Text style={styles.totalAmountText}>$5000</Text>
+                        <Text style={styles.totalAmountText}>${calculateTotalCost(category?.CategoryItems)}</Text>
                     </TouchableOpacity>
                 ))}
             </View>

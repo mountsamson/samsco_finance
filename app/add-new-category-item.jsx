@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Image, TextInput, ScrollView, KeyboardAvoidingView, ToastAndroid, Alert } from 'react-native'
+import { View, Text, StyleSheet, Image, TextInput, ScrollView, KeyboardAvoidingView, ToastAndroid, Alert, ActivityIndicator } from 'react-native'
 import React from 'react'
 import Colors from '../utils/Colors'
 import { supabase } from '../utils/SupabaseConfig'
@@ -8,22 +8,27 @@ import FontAwesome from '@expo/vector-icons/FontAwesome'
 import { TouchableOpacity } from 'react-native'
 import * as ImagePicker from 'expo-image-picker'
 import { decode } from 'base64-arraybuffer'
-import { useLocalSearchParams } from 'expo-router'
+import { useLocalSearchParams, useRouter } from 'expo-router'
 
 const placeholder = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVYS7KEXYFAwqdRCW81e4DSR_nSLYSFStx1Q&s'
 
 export default function AddNewCategoryItem() {
+    const { categoryId } = useLocalSearchParams()
     const [image, setImage] = useState(placeholder)
     const [previeImage, setPreviewImage] = useState(placeholder)
     const [name, setName] = useState('')
     const [url, setUrl] = useState('')
     const [cost, setCost] = useState('')
     const [note, setNote] = useState('')
-    const { categoryId } = useLocalSearchParams()
+    const router = useRouter()
+    const [loading, setLoading] = useState(false)
+
 
     useEffect(() => {
         if (!categoryId) {
             Alert.alert('Category ID is missing');
+        } else {
+            Alert.alert('Category ID set')
         }
     }, [categoryId]);
 
@@ -31,7 +36,6 @@ export default function AddNewCategoryItem() {
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
             allowsEditing: false,
-            aspect: [4, 3],
             base64: true,
             quality: 0.7,
         })
@@ -45,6 +49,7 @@ export default function AddNewCategoryItem() {
     }
 
     const onClickAdd = async () => {
+        setLoading(true)
         const fileName = Date.now()
         const { data, error } = await supabase
             .storage
@@ -65,11 +70,17 @@ export default function AddNewCategoryItem() {
                     url: url,
                     image: fileUrl,
                     note: note,
-                    category_id: categoryId
+                    category_id: categoryId,
                 }]).select();
 
             console.log(data)
             ToastAndroid.show('New Item Added!!!', ToastAndroid.SHORT)
+            router.replace({
+                pathname: '/category-details',
+                params: {
+                    categoryId: categoryId
+                }
+            })
 
 
         }
@@ -80,7 +91,7 @@ export default function AddNewCategoryItem() {
     return (
         <KeyboardAvoidingView>
 
-            <ScrollView style={{ padding: 20 }}>
+            <ScrollView style={{ padding: 20, backgroundColor: Colors.WHITE }}>
                 <TouchableOpacity onPress={() => onImagePick()}>
                     <Image source={{ uri: previeImage }} style={styles.image} />
                 </TouchableOpacity>
@@ -111,10 +122,13 @@ export default function AddNewCategoryItem() {
                     <TextInput placeholder="Note" style={styles.input} numberOfLines={3} onChangeText={(value) => setNote(value)} />
                 </View>
                 <TouchableOpacity style={styles.button}
-                    disabled={!name || !cost}
+                    disabled={!name || !cost || loading}
                     onPress={() => onClickAdd()}
                 >
-                    <Text style={{ textAlign: 'center', fontFamily: 'outfit-bold', color: Colors.WHITE }}>Add</Text>
+                    {loading ?
+                        <ActivityIndicator color={Colors.WHITE} /> :
+                        <Text style={{ textAlign: 'center', fontFamily: 'outfit-bold', color: Colors.WHITE }}>Add</Text>
+                    }
 
                 </TouchableOpacity>
 

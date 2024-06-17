@@ -1,28 +1,70 @@
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, Alert, ToastAndroid } from 'react-native'
 import React, { useEffect } from 'react'
 import { Ionicons } from '@expo/vector-icons'
 import Colors from '../../utils/Colors'
 import { useState } from 'react'
+import { supabase } from '../../utils/SupabaseConfig'
+import { useRouter } from 'expo-router'
 
 
 export default function CourseInfo({ categoryData }) {
     const [totalCost, setTotalCost] = useState()
     const [percentageTotal, setPercentageTotal] = useState()
+    const router = useRouter()
 
 
     useEffect(() => {
         categoryData && calculateTotalPercentage()
     }, [categoryData])
+
+
     const calculateTotalPercentage = () => {
         let total = 0
         categoryData.CategoryItems?.forEach(item => {
             total += item.cost
         })
         setTotalCost(total)
-        const percentage = (total / categoryData.assigned_budget) * 100
+        let percentage = (total / categoryData.assigned_budget) * 100
+        if (percentage > 100) {
+            percentage = 100
+
+        }
         setPercentageTotal(percentage)
 
     }
+
+    const onDeleteCategory = () => {
+        Alert.alert('Are you Sure?', 'Do you really want to delete>?', [
+            {
+                text: 'Cancel',
+                style: 'cancel'
+            },
+            {
+                text: 'Yes',
+                style: 'destructive',
+                onPress: async () => {
+
+                    const { error } = await supabase
+                        .from('CategoryItems')
+                        .delete()
+                        .eq('category_id', categoryData.id)
+
+                    await supabase
+                        .from('Category')
+                        .delete()
+                        .eq('id', categoryData.id)
+
+                    ToastAndroid.show("Category deleted", Toast.SHORT)
+
+                    router.replace('/(tabs)')
+
+
+
+                }
+            }
+        ])
+    }
+
 
     return (
         <View>
@@ -39,7 +81,11 @@ export default function CourseInfo({ categoryData }) {
                     <Text style={styles.categoryItemText}>{categoryData?.CategoryItems?.length} Item</Text>
 
                 </View>
-                <Ionicons name="trash" size={24} color="red" />
+                <TouchableOpacity>
+                    <Ionicons name="trash" size={24} color="red" onPress={() => onDeleteCategory()} />
+
+                </TouchableOpacity>
+
             </View>
             {/* Progress Bar */}
             <View style={styles.amountContainer}>
@@ -52,6 +98,7 @@ export default function CourseInfo({ categoryData }) {
             </View>
         </View>
     )
+
 }
 
 const styles = StyleSheet.create({

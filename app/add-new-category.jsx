@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TextInput, ToastAndroid } from 'react-native'
+import { View, Text, StyleSheet, TextInput, ToastAndroid, ActivityIndicator } from 'react-native'
 import React, { useState } from 'react'
 import Colors from '../utils/Colors'
 import ColorPicker from '../components/ColorPicker'
@@ -14,9 +14,11 @@ export default function AddNewCategory() {
     const [selectedColor, setSelectedColor] = useState(Colors.PRIMARY)
     const [categoryName, setCategoryName] = useState()
     const [totalBudget, setTotalBudget] = useState()
+    const [loading, setLoading] = useState(false)
 
     const router = useRouter()
     const onCreateCategory = async () => {
+        setLoading(true)
         const user = await client.getUserDetails()
         const { data, error } = await supabase.from('Category')
             .insert([{
@@ -37,7 +39,12 @@ export default function AddNewCategory() {
 
                 }
             })
+            setLoading(false)
             ToastAndroid.show('Category Created', ToastAndroid.SHORT)
+        }
+        if (error) {
+            setLoading(false)
+
         }
     }
 
@@ -77,12 +84,15 @@ export default function AddNewCategory() {
                 />
             </View>
 
-            <TouchableOpacity style={styles.button} disabled={!categoryName || !totalBudget} onPress={() => onCreateCategory()}>
-                <Text style={{
-                    textAlign: 'center',
-                    fontSize: 16,
-                    color: Colors.WHITE
-                }}>Create</Text>
+            <TouchableOpacity style={styles.button} disabled={!categoryName || !totalBudget || loading} onPress={() => onCreateCategory()}>
+                {loading ?
+                    <ActivityIndicator color={Colors.WHITE} /> :
+
+                    <Text style={{
+                        textAlign: 'center',
+                        fontSize: 16,
+                        color: Colors.WHITE
+                    }}>Create</Text>}
 
             </TouchableOpacity>
 

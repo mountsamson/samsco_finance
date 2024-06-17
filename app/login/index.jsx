@@ -9,13 +9,13 @@ import { useRouter } from 'expo-router'
 
 export default function LoginScreen() {
 
-    const router = useRouter()
 
+
+    const router = useRouter()
     const handleSignIn = async () => {
         const token = await client.login();
         if (token) {
             // User was authenticated
-
             await services.storeData('login', 'true')
             router.replace('/')
         }

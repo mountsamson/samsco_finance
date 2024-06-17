@@ -47,6 +47,8 @@ export default function Home() {
     };
   }
 
+
+
   const getCategoryList = async () => {
     setLoading(true)
     const user = await client.getUserDetails()
@@ -82,7 +84,7 @@ export default function Home() {
           padding: 20,
           marginTop: -76
         }}>
-          <PieChartGraph />
+          <PieChartGraph categoryList={categoryList} />
           <CategoryList categoryList={categoryList} />
         </View>
 
@@ -94,7 +96,7 @@ export default function Home() {
 
 
       </TouchableOpacity>
-      <Button title="Logout" onPress={handleLogout} />
+
 
 
     </View>
