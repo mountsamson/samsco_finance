@@ -38,14 +38,7 @@ export default function Home() {
 
 
   }
-  const handleLogout = async () => {
-    const loggedOut = await client.logout();
-    if (loggedOut) {
-      await services.storeData('login', 'false')
-      router.replace('/login')
-      // User was authenticated
-    };
-  }
+
 
 
 

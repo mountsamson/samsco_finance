@@ -24,13 +24,7 @@ export default function AddNewCategoryItem() {
     const [loading, setLoading] = useState(false)
 
 
-    useEffect(() => {
-        if (!categoryId) {
-            Alert.alert('Category ID is missing');
-        } else {
-            Alert.alert('Category ID set')
-        }
-    }, [categoryId]);
+
 
     const onImagePick = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({

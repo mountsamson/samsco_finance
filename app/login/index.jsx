@@ -5,6 +5,7 @@ import colors from '../../utils/Colors'
 import { client } from '../../utils/KindeConfig'
 import services from './../../utils/services'
 import { useRouter } from 'expo-router'
+import { Linking } from 'react-native';
 
 
 export default function LoginScreen() {

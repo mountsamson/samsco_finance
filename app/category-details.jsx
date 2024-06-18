@@ -6,6 +6,8 @@ import CourseInfo from '../components/CourseDetail/CourseInfo'
 import { supabase } from '../utils/SupabaseConfig'
 import CourseItemList from '../components/CourseDetail/CourseItemList'
 import Colors from '../utils/Colors'
+import { Link } from 'expo-router'
+import { ScrollView } from 'react-native'
 
 export default function CategoryDetails() {
   const { categoryId } = useLocalSearchParams()
@@ -27,17 +29,27 @@ export default function CategoryDetails() {
 
   return (
     <View style={{ padding: 20, marginTop: 20, flex: 1, backgroundColor: Colors.WHITE }}>
-      <TouchableOpacity onPress={() => router.back()}>
-        <Ionicons name="arrow-back-circle" size={44} color="black" />
-      </TouchableOpacity>
-      <CourseInfo categoryData={categoryData} />
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <TouchableOpacity onPress={() => router.replace('/(tabs)')}>
+          <Ionicons name="arrow-back-circle" size={44} color="black" />
+        </TouchableOpacity>
+        <CourseInfo categoryData={categoryData} />
 
-      <CourseItemList categoryData={categoryData} />
+        <CourseItemList categoryData={categoryData} setUpdateRecord={() => getCategoryDetail()} />
+      </ScrollView>
 
-      <TouchableOpacity style={styles.floatingBtn} onPress={() => router.push('/add-new-category-item')} >
+
+
+      <Link
+        href={{
+          pathname: '/add-new-category-item',
+          params: {
+            categoryId: categoryData.id
+          }
+        }} style={styles.floatingBtn} >
 
         <Ionicons name="add-circle" size={60} color={Colors.PRIMARY} />
-      </TouchableOpacity>
+      </Link>
 
     </View>
   )
